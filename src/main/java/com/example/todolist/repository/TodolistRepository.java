@@ -25,4 +25,6 @@ public interface TodolistRepository {
     String findEmailById(int id);
 
     int deleteTodolist(int id, DeleteListRequestDto dto);
+
+    List<FindListResponseDto> findTodolistByPage(int page, int size);
 }

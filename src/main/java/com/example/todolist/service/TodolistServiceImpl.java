@@ -94,4 +94,9 @@ public class TodolistServiceImpl implements TodolistService{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = "+ id);
         }
     }
+
+    @Override
+    public List<FindListResponseDto> findTodolistByPage(int page, int size) {
+        return todolistRepository.findTodolistByPage(page, size);
+    }
 }

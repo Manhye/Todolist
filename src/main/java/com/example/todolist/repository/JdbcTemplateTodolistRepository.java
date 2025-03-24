@@ -183,6 +183,31 @@ public class JdbcTemplateTodolistRepository implements TodolistRepository {
     public int deleteTodolist(int id, DeleteListRequestDto dto) {
         return jdbcTemplate.update("delete from todolist where id = ?", id);
     }
+
+    @Override
+    public List<FindListResponseDto> findTodolistByPage(int page, int size) {
+        int offset = (page - 1) * size;
+
+        String sql = "SELECT t.id, t.task, t.description, t.scheduled_date, t.created_at, t.updated_at, " +
+                "a.name AS name, a.email AS email " +
+                "FROM todolist t " +
+                "JOIN author a ON t.author_id = a.id " +
+                "LIMIT ? OFFSET ?";
+
+        return jdbcTemplate.query(sql,
+                new Object[]{size, offset},
+                (rs, rowNum) -> new FindListResponseDto(
+                        rs.getInt("id"),
+                        rs.getString("task"),
+                        rs.getString("description"),
+                        rs.getDate("scheduled_date"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                )
+        );
+    }
 //
 //
 //    private RowMapper<TodolistResponseDto> todolistRowMapper() {

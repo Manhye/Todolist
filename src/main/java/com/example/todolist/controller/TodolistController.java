@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -29,8 +30,25 @@ public class TodolistController {
     }
 
     @GetMapping
-    public List<FindListResponseDto> findAllTodolists(){
-        return todolistService.findAllTodolists();
+    public ResponseEntity<List<FindListResponseDto>> findAllTodolists(
+            @RequestParam(value = "page", defaultValue = "1000") int page,
+            @RequestParam(value = "size", defaultValue = "1000") int size) {
+
+        // exception
+        if (page <= 0 || size <= 0) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        List<FindListResponseDto> todolist;
+
+        if (page == 1000 && size == 1000) {
+            // no paging if default
+            todolist = todolistService.findAllTodolists();
+        } else {
+            todolist = todolistService.findTodolistByPage(page, size);
+        }
+
+        return new ResponseEntity<>(todolist, HttpStatus.OK);
     }
 
     @GetMapping("/scheduled_date")
