@@ -1,10 +1,9 @@
 package com.example.todolist.service;
 
-import com.example.todolist.dto.DeleteListRequestDto;
-import com.example.todolist.dto.FindListResponseDto;
-import com.example.todolist.dto.TodolistRequestDto;
-import com.example.todolist.dto.TodolistResponseDto;
+import com.example.todolist.dto.*;
 import com.example.todolist.entity.Todolist;
+import com.example.todolist.exception.InvalidPasswordException;
+import com.example.todolist.exception.MissingRequiredFieldException;
 import com.example.todolist.repository.TodolistRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -52,15 +51,17 @@ public class TodolistServiceImpl implements TodolistService{
     @Transactional
     @Override
     public FindListResponseDto updateTodolist(int id, TodolistRequestDto dto) {
-        if(dto.getTask()==null||dto.getDescription()==null||dto.getPassword()==null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Task, description, author, and password are required");
+        if(dto.getTask()==null||dto.getDescription()==null||dto.getEmail()==null||dto.getPassword()==null){
+            throw new MissingRequiredFieldException("Task, description, email, and password are required");
         }
 
-        String email = todolistRepository.findEmailById(id);
-        String password = todolistRepository.findPasswordById(id);
+        AuthorInfoDto authorInfoDto = todolistRepository.findEmailAndPasswordById(id);
+
+        String email = authorInfoDto.getEmail();
+        String password = authorInfoDto.getPassword();
 
         if (!(password.equals(dto.getPassword())&&email.equals(dto.getEmail()))) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+            throw new InvalidPasswordException("Invalid email or password");
         }
 
         int updatedRow = todolistRepository.updatedTodolist(id, dto.getTask(),dto.getDescription(),dto.getScheduled_date());
@@ -69,8 +70,6 @@ public class TodolistServiceImpl implements TodolistService{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = "+ id);
         }
 
-
-
         return todolistRepository.findTodolistByIdOrElseThrow(id);
     }
 
@@ -78,14 +77,16 @@ public class TodolistServiceImpl implements TodolistService{
     public void deleteTodolist(int id, DeleteListRequestDto dto) {
 
         if(dto.getEmail()==null||dto.getPassword()==null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email and password are required");
+            throw new MissingRequiredFieldException("Email and password are required");
         }
 
-        String email = todolistRepository.findEmailById(id);
-        String password = todolistRepository.findPasswordById(id);
+        AuthorInfoDto authorInfoDto = todolistRepository.findEmailAndPasswordById(id);
+
+        String email = authorInfoDto.getEmail();
+        String password = authorInfoDto.getPassword();
 
         if (!(password.equals(dto.getPassword())&&email.equals(dto.getEmail()))) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+            throw new InvalidPasswordException("Invalid email or password");
         }
 
         int deletedRow = todolistRepository.deleteTodolist(id, dto);

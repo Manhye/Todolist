@@ -1,10 +1,8 @@
 package com.example.todolist.repository;
 
-import com.example.todolist.dto.DeleteListRequestDto;
-import com.example.todolist.dto.FindListResponseDto;
-import com.example.todolist.dto.TodolistRequestDto;
-import com.example.todolist.dto.TodolistResponseDto;
+import com.example.todolist.dto.*;
 import com.example.todolist.entity.Todolist;
+import com.example.todolist.exception.TodolistNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -145,7 +143,7 @@ public class JdbcTemplateTodolistRepository implements TodolistRepository {
                     rs.getString("email")  // Author's email
             ));
         } catch (EmptyResultDataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+            throw new TodolistNotFoundException("ID does not exist. ID: " + id);
         }
     }
 
@@ -208,38 +206,20 @@ public class JdbcTemplateTodolistRepository implements TodolistRepository {
                 )
         );
     }
-//
-//
-//    private RowMapper<TodolistResponseDto> todolistRowMapper() {
-//        return new RowMapper<TodolistResponseDto>(){
-//            @Override
-//            public TodolistResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                return new TodolistResponseDto(
-//                        rs.getInt("id"),
-//                        rs.getString("task"),
-//                        rs.getString("description"),
-//                        rs.getDate("scheduled_date"),
-//                        rs.getTimestamp("created_at"),
-//                        rs.getTimestamp("updated_at")
-//                );
-//            }
-//        };
-//    }
 
-//    private RowMapper<Todolist> todolistRowMapperV2() {
-//        return new RowMapper<Todolist>(){
-//            @Override
-//            public Todolist mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                return new Todolist(
-//                        rs.getInt("id"),
-//                        rs.getString("task"),
-//                        rs.getString("description"),
-//                        rs.getInt("author_id"),
-//                        rs.getDate("scheduled_date"),
-//                        rs.getTimestamp("created_at"),
-//                        rs.getTimestamp("updated_at")
-//                );
-//            }
-//        };
-//    }
+    @Override
+    public AuthorInfoDto findEmailAndPasswordById(int id) {
+        String sql = "SELECT a.email, a.password " +
+                "FROM author a "+
+                "JOIN todolist t ON t.author_id = a.id " +
+                "WHERE t.id = ?";
+
+        return jdbcTemplate.queryForObject(sql,
+                (rs, rowNum) -> new AuthorInfoDto(
+                        rs.getString("email"),
+                        rs.getString("password")
+                ),id
+        );
+    }
+
 }

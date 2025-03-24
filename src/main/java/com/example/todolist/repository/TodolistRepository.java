@@ -1,9 +1,6 @@
 package com.example.todolist.repository;
 
-import com.example.todolist.dto.DeleteListRequestDto;
-import com.example.todolist.dto.FindListResponseDto;
-import com.example.todolist.dto.TodolistRequestDto;
-import com.example.todolist.dto.TodolistResponseDto;
+import com.example.todolist.dto.*;
 import com.example.todolist.entity.Todolist;
 
 import java.sql.Date;
@@ -27,4 +24,6 @@ public interface TodolistRepository {
     int deleteTodolist(int id, DeleteListRequestDto dto);
 
     List<FindListResponseDto> findTodolistByPage(int page, int size);
+
+    AuthorInfoDto findEmailAndPasswordById(int id);
 }
