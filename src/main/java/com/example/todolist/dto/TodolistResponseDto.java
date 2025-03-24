@@ -13,7 +13,6 @@ public class TodolistResponseDto {
     private int id;
     private String task;
     private String description;
-    private String author;
     private Date scheduled_date;
     private Timestamp created_at;
     private Timestamp updated_at;
@@ -23,7 +22,6 @@ public class TodolistResponseDto {
         this.id=todolist.getId();
         this.task=todolist.getTask();
         this.description=todolist.getDescription();
-        this.author=todolist.getAuthor();
         this.scheduled_date=todolist.getScheduled_date();
         this.created_at=todolist.getCreated_at();
         this.updated_at=todolist.getUpdated_at();

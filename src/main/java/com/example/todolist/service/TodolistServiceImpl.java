@@ -1,5 +1,7 @@
 package com.example.todolist.service;
 
+import com.example.todolist.dto.DeleteListRequestDto;
+import com.example.todolist.dto.FindListResponseDto;
 import com.example.todolist.dto.TodolistRequestDto;
 import com.example.todolist.dto.TodolistResponseDto;
 import com.example.todolist.entity.Todolist;
@@ -24,58 +26,70 @@ public class TodolistServiceImpl implements TodolistService{
     @Override
     public TodolistResponseDto saveTodolist(TodolistRequestDto dto) {
 
-        Todolist todolist = new Todolist(dto.getTask(), dto.getDescription(), dto.getAuthor(), dto.getPassword(), dto.getScheduled_date());
+        TodolistResponseDto todolistResponseDto = todolistRepository.saveTodolist(dto);
 
-        return todolistRepository.saveTodolist(todolist);
+        return todolistResponseDto;
 
     }
 
     @Override
-    public List<TodolistResponseDto> findAllTodolists() {
+    public List<FindListResponseDto> findAllTodolists() {
         return todolistRepository.findAllTodolists();
     }
 
     @Override
-    public List<TodolistResponseDto> findTodolistByScheduled_date(Date scheduled_date) {
+    public List<FindListResponseDto> findTodolistByScheduled_date(Date scheduled_date) {
         return todolistRepository.findTodolistByScheduled_date(scheduled_date);
     }
 
     @Override
-    public TodolistResponseDto findTodolistById(int id) {
-        Todolist todolist = todolistRepository.findTodolistByIdOrElseThrow(id);
+    public FindListResponseDto findTodolistById(int id) {
 
-        return new TodolistResponseDto(todolist);
+        return todolistRepository.findTodolistByIdOrElseThrow(id);
     }
 
 
     @Transactional
     @Override
-    public TodolistResponseDto updateTodolist(int id, TodolistRequestDto dto) {
-        if(dto.getTask()==null||dto.getDescription()==null||dto.getAuthor()==null||dto.getPassword()==null){
+    public FindListResponseDto updateTodolist(int id, TodolistRequestDto dto) {
+        if(dto.getTask()==null||dto.getDescription()==null||dto.getPassword()==null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Task, description, author, and password are required");
         }
 
+        String email = todolistRepository.findEmailById(id);
         String password = todolistRepository.findPasswordById(id);
 
-        if (!password.equals(dto.getPassword())) {
+        if (!(password.equals(dto.getPassword())&&email.equals(dto.getEmail()))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
         }
 
-        int updatedRow = todolistRepository.updatedTodolist(id, dto.getTask(),dto.getDescription(),dto.getAuthor(),dto.getScheduled_date());
+        int updatedRow = todolistRepository.updatedTodolist(id, dto.getTask(),dto.getDescription(),dto.getScheduled_date());
 
         if(updatedRow==0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = "+ id);
         }
 
-        Todolist todolist = todolistRepository.findTodolistByIdOrElseThrow(id);
 
 
-        return new TodolistResponseDto(todolist);
+        return todolistRepository.findTodolistByIdOrElseThrow(id);
     }
 
     @Override
-    public void deleteTodolist(int id) {
-        int deletedRow = todolistRepository.deleteTodolist(id);
+    public void deleteTodolist(int id, DeleteListRequestDto dto) {
+
+        if(dto.getEmail()==null||dto.getPassword()==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email and password are required");
+        }
+
+        String email = todolistRepository.findEmailById(id);
+        String password = todolistRepository.findPasswordById(id);
+
+        if (!(password.equals(dto.getPassword())&&email.equals(dto.getEmail()))) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+        }
+
+        int deletedRow = todolistRepository.deleteTodolist(id, dto);
+
         if(deletedRow==0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = "+ id);
         }

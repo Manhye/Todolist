@@ -1,5 +1,7 @@
 package com.example.todolist.service;
 
+import com.example.todolist.dto.DeleteListRequestDto;
+import com.example.todolist.dto.FindListResponseDto;
 import com.example.todolist.dto.TodolistRequestDto;
 import com.example.todolist.dto.TodolistResponseDto;
 
@@ -9,13 +11,13 @@ import java.util.List;
 public interface TodolistService {
     TodolistResponseDto saveTodolist(TodolistRequestDto dto);
 
-    List<TodolistResponseDto> findAllTodolists();
+    List<FindListResponseDto> findAllTodolists();
 
-    List<TodolistResponseDto> findTodolistByScheduled_date(Date scheduled_date);
+    List<FindListResponseDto> findTodolistByScheduled_date(Date scheduled_date);
 
-    TodolistResponseDto findTodolistById(int id);
+    FindListResponseDto findTodolistById(int id);
 
-    TodolistResponseDto updateTodolist(int id, TodolistRequestDto dto);
+    FindListResponseDto updateTodolist(int id, TodolistRequestDto dto);
 
-    void deleteTodolist(int id);
+    void deleteTodolist(int id, DeleteListRequestDto dto);
 }

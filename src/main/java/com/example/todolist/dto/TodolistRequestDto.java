@@ -8,7 +8,8 @@ import java.sql.Date;
 public class TodolistRequestDto {
     private String task;
     private String description;
-    private String author;
+    private String name;
+    private String email;
     private String password;
     private Date scheduled_date;
 }

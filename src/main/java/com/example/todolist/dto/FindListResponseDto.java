@@ -1,4 +1,4 @@
-package com.example.todolist.entity;
+package com.example.todolist.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,12 +8,13 @@ import java.sql.Timestamp;
 
 @Getter
 @AllArgsConstructor
-public class Todolist {
+public class FindListResponseDto {
     private int id;
     private String task;
     private String description;
-    private int author_id;
     private Date scheduled_date;
     private Timestamp created_at;
     private Timestamp updated_at;
+    private String name;
+    private String email;
 }

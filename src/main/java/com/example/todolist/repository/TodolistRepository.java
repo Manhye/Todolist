@@ -1,5 +1,7 @@
 package com.example.todolist.repository;
 
+import com.example.todolist.dto.DeleteListRequestDto;
+import com.example.todolist.dto.FindListResponseDto;
 import com.example.todolist.dto.TodolistRequestDto;
 import com.example.todolist.dto.TodolistResponseDto;
 import com.example.todolist.entity.Todolist;
@@ -8,17 +10,19 @@ import java.sql.Date;
 import java.util.List;
 
 public interface TodolistRepository {
-    TodolistResponseDto saveTodolist(Todolist todolist);
+    TodolistResponseDto saveTodolist(TodolistRequestDto dto);
 
-    List<TodolistResponseDto> findAllTodolists();
+    List<FindListResponseDto> findAllTodolists();
 
-    List<TodolistResponseDto> findTodolistByScheduled_date(Date scheduledDate);
+    List<FindListResponseDto> findTodolistByScheduled_date(Date scheduledDate);
 
-    Todolist findTodolistByIdOrElseThrow(int id);
+    FindListResponseDto findTodolistByIdOrElseThrow(int id);
 
-    int updatedTodolist(int id, String task, String description, String author, Date scheduled_date);
+    int updatedTodolist(int id, String task, String description, Date scheduled_date);
 
     String findPasswordById(int id);
 
-    int deleteTodolist(int id);
+    String findEmailById(int id);
+
+    int deleteTodolist(int id, DeleteListRequestDto dto);
 }
