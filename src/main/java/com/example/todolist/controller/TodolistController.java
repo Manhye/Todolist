@@ -6,6 +6,7 @@ import com.example.todolist.dto.FindListResponseDto;
 import com.example.todolist.dto.TodolistRequestDto;
 import com.example.todolist.dto.TodolistResponseDto;
 import com.example.todolist.service.TodolistService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class TodolistController {
     }
 
     @PostMapping
-    public ResponseEntity<TodolistResponseDto> saveTodolist(@RequestBody TodolistRequestDto dto){
+    public ResponseEntity<TodolistResponseDto> saveTodolist(@Valid @RequestBody TodolistRequestDto dto){
         return new ResponseEntity<>(todolistService.saveTodolist(dto), HttpStatus.CREATED);
     }
 
@@ -64,7 +65,7 @@ public class TodolistController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FindListResponseDto> updateTodolist(@PathVariable int id, @RequestBody TodolistRequestDto dto){
+    public ResponseEntity<FindListResponseDto> updateTodolist(@PathVariable int id, @Valid @RequestBody TodolistRequestDto dto){
         return new ResponseEntity<>(todolistService.updateTodolist(id, dto), HttpStatus.OK);
     }
 

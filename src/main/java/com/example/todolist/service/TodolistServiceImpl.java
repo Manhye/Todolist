@@ -51,9 +51,9 @@ public class TodolistServiceImpl implements TodolistService{
     @Transactional
     @Override
     public FindListResponseDto updateTodolist(int id, TodolistRequestDto dto) {
-        if(dto.getTask()==null||dto.getDescription()==null||dto.getEmail()==null||dto.getPassword()==null){
-            throw new MissingRequiredFieldException("Task, description, email, and password are required");
-        }
+//        if(dto.getTask()==null||dto.getDescription()==null||dto.getEmail()==null||dto.getPassword()==null){
+//            throw new MissingRequiredFieldException("Task, description, email, and password are required");
+//        }
 
         AuthorInfoDto authorInfoDto = todolistRepository.findEmailAndPasswordById(id);
 
@@ -76,9 +76,9 @@ public class TodolistServiceImpl implements TodolistService{
     @Override
     public void deleteTodolist(int id, DeleteListRequestDto dto) {
 
-        if(dto.getEmail()==null||dto.getPassword()==null){
-            throw new MissingRequiredFieldException("Email and password are required");
-        }
+//        if(dto.getEmail()==null||dto.getPassword()==null){
+//            throw new MissingRequiredFieldException("Email and password are required");
+//        } //don't need anymore
 
         AuthorInfoDto authorInfoDto = todolistRepository.findEmailAndPasswordById(id);
 
