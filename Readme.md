@@ -20,6 +20,7 @@ This project is to study how to use Spring Boot. Many people can save their info
     - [Pagination](#pagination)
     - [Exception Handling](#exception-handling)
     - [Validation](#validation)
+6. [Developer](#Developer)
 
 ---
 
@@ -40,7 +41,7 @@ This project is to study how to use Spring Boot. Many people can save their info
 
 ## Entity Relationship Diagram (ERD)
 
-![img.png](src/main/java/com/example/todolist/asset/ERD.png)>
+![img.png](src/main/java/com/example/todolist/asset/ERD.png)
 
 ## SQL Schema
 

@@ -31,7 +31,13 @@ public class JdbcTemplateTodolistRepository implements TodolistRepository {
         String findAuthorSql = "SELECT id FROM author WHERE email = ? AND password = ?";
         Integer authorId = jdbcTemplate.query(findAuthorSql,
                 new Object[]{dto.getEmail(), dto.getPassword()},
-                (rs) -> rs.next() ? rs.getInt("id") : null);
+                (rs) -> {
+                    if (rs.next()) {
+                        return rs.getInt("id");
+                    }
+                    return null;
+                });
+
 
         // 2️⃣ If it doesn't exist, add new author on the table.
         if (authorId == null) {
