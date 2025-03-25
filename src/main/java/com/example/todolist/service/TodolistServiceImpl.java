@@ -1,9 +1,7 @@
 package com.example.todolist.service;
 
 import com.example.todolist.dto.*;
-import com.example.todolist.entity.Todolist;
 import com.example.todolist.exception.InvalidPasswordException;
-import com.example.todolist.exception.MissingRequiredFieldException;
 import com.example.todolist.repository.TodolistRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

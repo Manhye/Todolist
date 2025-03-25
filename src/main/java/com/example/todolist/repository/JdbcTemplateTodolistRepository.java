@@ -1,15 +1,12 @@
 package com.example.todolist.repository;
 
 import com.example.todolist.dto.*;
-import com.example.todolist.entity.Todolist;
 import com.example.todolist.exception.TodolistNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.Date;

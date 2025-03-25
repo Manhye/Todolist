@@ -1,7 +1,6 @@
 package com.example.todolist.repository;
 
 import com.example.todolist.dto.*;
-import com.example.todolist.entity.Todolist;
 
 import java.sql.Date;
 import java.util.List;

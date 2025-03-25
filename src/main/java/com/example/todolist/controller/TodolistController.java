@@ -76,7 +76,7 @@ public class TodolistController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodolist(@PathVariable int id, @RequestBody DeleteListRequestDto dto){
+    public ResponseEntity<Void> deleteTodolist(@PathVariable int id, @Valid @RequestBody DeleteListRequestDto dto){
         todolistService.deleteTodolist(id, dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
