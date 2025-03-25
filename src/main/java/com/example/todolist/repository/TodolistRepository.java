@@ -17,13 +17,11 @@ public interface TodolistRepository {
 
     int updatedTodolist(int id, String task, String description, Date scheduled_date);
 
-    String findPasswordById(int id);
-
-    String findEmailById(int id);
-
     int deleteTodolist(int id, DeleteListRequestDto dto);
 
     List<FindListResponseDto> findTodolistByPage(int page, int size);
 
     AuthorInfoDto findEmailAndPasswordById(int id);
+
+    List<FindListResponseDto> findTodolistByUserId(int id);
 }

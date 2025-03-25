@@ -17,13 +17,4 @@ public class TodolistResponseDto {
     private Timestamp created_at;
     private Timestamp updated_at;
 
-
-    public TodolistResponseDto(Todolist todolist){
-        this.id=todolist.getId();
-        this.task=todolist.getTask();
-        this.description=todolist.getDescription();
-        this.scheduled_date=todolist.getScheduled_date();
-        this.created_at=todolist.getCreated_at();
-        this.updated_at=todolist.getUpdated_at();
-    }
 }

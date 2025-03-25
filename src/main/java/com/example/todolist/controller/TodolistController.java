@@ -64,6 +64,12 @@ public class TodolistController {
         return new ResponseEntity<>(todolistService.findTodolistById(id),HttpStatus.OK);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<List<FindListResponseDto>> findTodolistByUserId(@RequestParam("id") int id){
+        List<FindListResponseDto> todolist = todolistService.findTodolistByUserId(id);
+        return new ResponseEntity<>(todolist,HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<FindListResponseDto> updateTodolist(@PathVariable int id, @Valid @RequestBody TodolistRequestDto dto){
         return new ResponseEntity<>(todolistService.updateTodolist(id, dto), HttpStatus.OK);

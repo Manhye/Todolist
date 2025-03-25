@@ -22,4 +22,6 @@ public interface TodolistService {
     void deleteTodolist(int id, DeleteListRequestDto dto);
 
     List<FindListResponseDto> findTodolistByPage(int page, int size);
+
+    List<FindListResponseDto> findTodolistByUserId(int id);
 }

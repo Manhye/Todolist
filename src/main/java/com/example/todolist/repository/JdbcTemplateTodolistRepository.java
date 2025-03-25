@@ -153,29 +153,6 @@ public class JdbcTemplateTodolistRepository implements TodolistRepository {
                 task, description, scheduled_date, id);
     }
 
-    @Override
-    public String findPasswordById(int id) {
-        return jdbcTemplate.queryForObject(
-                "SELECT a.password " +
-                        "FROM todolist t " +
-                        "JOIN author a ON t.author_id = a.id " +
-                        "WHERE t.id = ?",
-                String.class,
-                id
-        );
-    }
-
-    @Override
-    public String findEmailById(int id) {
-        return jdbcTemplate.queryForObject(
-                "SELECT a.email " +
-                        "FROM todolist t " +
-                        "JOIN author a ON t.author_id = a.id " +
-                        "WHERE t.id = ?",
-                String.class,
-                id
-        );
-    }
 
     @Override
     public int deleteTodolist(int id, DeleteListRequestDto dto) {
@@ -220,6 +197,26 @@ public class JdbcTemplateTodolistRepository implements TodolistRepository {
                         rs.getString("password")
                 ),id
         );
+    }
+
+    @Override
+    public List<FindListResponseDto> findTodolistByUserId(int id) {
+        String sql = "SELECT t.id, t.task, t.description, t.author_id, t.scheduled_date, t.created_at, t.updated_at, " +
+                "a.name AS name, a.email AS email " +
+                "FROM todolist t " +
+                "JOIN author a ON t.author_id = a.id " +
+                "WHERE a.id = ?";
+
+        return jdbcTemplate.query(sql, new Object[]{id},(rs, rowNum) -> new FindListResponseDto(
+                rs.getInt("id"),
+                rs.getString("task"),
+                rs.getString("description"),
+                rs.getDate("scheduled_date"),
+                rs.getTimestamp("created_at"),
+                rs.getTimestamp("updated_at"),
+                rs.getString("name"),  // Author's name
+                rs.getString("email")  // Author's email
+        ));
     }
 
 }
